@@ -1,10 +1,11 @@
 // import 'dart:html';
 import 'dart:math';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as parser;
+import 'package:utm_its/models/internships.dart';
 
 class ViewInternship extends StatefulWidget {
   const ViewInternship({Key? key}) : super(key: key);
@@ -18,6 +19,7 @@ class _ViewInternshipState extends State<ViewInternship> {
   List<String> companies = [];
   List<String> locations = [];
   List<String> type = [];
+  List<String> applications = [];
 
   var notApplied = true;
 
@@ -27,14 +29,6 @@ class _ViewInternshipState extends State<ViewInternship> {
   String dropdownvalue4 = 'Major';
   String dropdownvalue5 = 'Salary';
   final response = [];
-  // var experience_level = [
-  //   'Experience Level',
-  //   'Internship',
-  //   'FreshGrads',
-  //   '1-2 Year',
-  //   '3+ Year'
-  // ];
-  // var company = ['Company', 'iprice', 'digi', 'cisco', 'ibm', 'intel'];
   var job_type = ['Job Type', 'On-Site', 'Remote'];
   var jobs = [];
   var field = ['Major', 'Computing', 'Software', 'IT'];
@@ -61,17 +55,22 @@ class _ViewInternshipState extends State<ViewInternship> {
     // final elements3 =
     //     document.getElementsByClassName('job-search-card__workplace-type');
 
+    // FirebaseFirestore.instance
+    //     .collection('applications')
+    //     .get()
+    //     .then((QuerySnapshot querySnapshot) {
+    //   querySnapshot.docs.forEach((doc) {
+    //     applications.add((doc.data() as dynamic)['company'].toString());
+    //   });
+    // });
+
     setState(() {
       titles = elements.map((element) => element.text.trim()).toList();
-      companies = elements1.map((element) => element.text.trim()).toList();
+      companies = elements1
+          .map((element) => element.text.trim())
+          .where((element) => element != 'OTC Trainning Center Sdn Bhd')
+          .toList();
       locations = elements2.map((element) => element.text.trim()).toList();
-      // type = elements3.map((element) => element.text.trim()).toList();
-      // for (var i = 0; i < titles.length; i++) {
-      //   // jobs[i] = i + 1;
-      //   jobs[i] = job_type[1 + Random().nextInt(job_type.length - 1)];
-      //   fields[i] = field[1 + Random().nextInt(field.length - 1)];
-      //   salaries[i] = salary[1 + Random().nextInt(salary.length - 1)];
-      // }
     });
   }
 
@@ -219,50 +218,10 @@ class _ViewInternshipState extends State<ViewInternship> {
                     child: ListView.builder(
                       itemCount: type.isEmpty ? titles.length : type.length,
                       itemBuilder: (context, index) {
-                        return Container(
-                          height: MediaQuery.of(context).size.height * 0.2,
-                          child: Card(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ListTile(
-                                  title: Text(titles[index].trim()),
-                                  subtitle: Text(companies[index].trim()),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 15.0),
-                                  child: Text(locations[index].trim()),
-                                ),
-                                notApplied
-                                    ? Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 15.0),
-                                        child: ElevatedButton(
-                                          child: Text('Apply'),
-                                          onPressed: () async {
-                                            try {
-                                              await FirebaseFirestore.instance
-                                                  .collection('applications')
-                                                  .doc()
-                                                  .set({
-                                                'name': titles[index],
-                                                'company': companies[index],
-                                                'location': locations[index],
-                                                'student': 'Raoa Faria Karim',
-                                              }).whenComplete(() {});
-                                            } catch (err) {
-                                              print(err);
-                                            } finally {
-                                              print('Logbook Submitted');
-                                            }
-                                          },
-                                        ),
-                                      )
-                                    : Text(''),
-                              ],
-                            ),
-                          ),
+                        return InternshipCard(
+                          title: titles[index],
+                          company: companies[index],
+                          location: locations[index],
                         );
                       },
                     ),

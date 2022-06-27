@@ -3,12 +3,17 @@
 // import 'dart:html';
 
 // import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:utm_its/admin_panel.dart';
 import 'package:utm_its/google_auth.dart';
 import 'package:utm_its/guest_page.dart';
 import 'package:utm_its/register_page.dart';
 import 'package:utm_its/student_screen.dart';
+import 'package:utm_its/view_supervisor.dart';
 
 class LoginPage extends StatefulWidget {
   // const LoginPage({Key? key, required this.title}) : super(key: key);
@@ -26,6 +31,12 @@ class _LoginPageState extends State<LoginPage> {
 
   // var _username = '';
   // final students = FirebaseFirestore.instance.collection('students');
+
+  final _chars =
+      'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+
+  String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
+      length, (_) => _chars.codeUnitAt(Random().nextInt(_chars.length))));
 
   final _firebaseAuth = FirebaseAuth.instance;
 
@@ -97,8 +108,27 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
+                      if (myControllerUsername.text == 'admin' &&
+                          myControllerPassword.text == 'admin') {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AdminPanel(),
+                          ),
+                        );
+                      } else if (myControllerUsername.text ==
+                              'jungkook@utm.my' &&
+                          myControllerPassword.text == 'super') {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Supervisor(
+                                    username: myControllerUsername.text)));
+                      }
+
                       // final query = students.where("matric", isEqualTo: '');
-                      if (_formKey.currentState!.validate()) {
+                      // if (_formKey.currentState!.validate()) {
+                      else {
                         _firebaseAuth
                             .signInWithEmailAndPassword(
                                 email: myControllerUsername.text,
@@ -131,13 +161,55 @@ class _LoginPageState extends State<LoginPage> {
                           context: context);
 
                       if (user != null) {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => GuestPage(
-                              user: user,
+                        bool exist = false;
+                        FirebaseFirestore.instance
+                            .collection('recruiters')
+                            .get()
+                            .then((value) {
+                          for (var doc in value.docs) {
+                            Map<String, dynamic> data = doc.data();
+                            if (data['email'] == user.email.toString()) {
+                              print('Email Found!');
+                              exist = true;
+                              // Navigator.of(context).pushReplacement(
+                              //   MaterialPageRoute(
+                              //     builder: (context) => GuestPage(
+                              //       user: user,
+                              //     ),
+                              //   ),
+                              // );
+                            }
+                          }
+                        });
+                        if (exist) {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => GuestPage(
+                                user: user,
+                              ),
                             ),
-                          ),
-                        );
+                          );
+                        } else {
+                          var string = getRandomString(20);
+
+                          // print('Email: ' + email.toString());
+                          FirebaseFirestore.instance
+                              .collection('recruiters')
+                              .doc(string)
+                              .set({
+                            'name': user.displayName.toString(),
+                            'id': string,
+                            'email': user.email.toString(),
+                          }).whenComplete(
+                            () => Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => GuestPage(
+                                  user: user,
+                                ),
+                              ),
+                            ),
+                          );
+                        }
                       }
                       // Navigator.push(
                       //     context,

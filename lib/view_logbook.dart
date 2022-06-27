@@ -1,10 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'models/logbook.dart';
 
-class ViewLogbook extends StatelessWidget {
+class ViewLogbook extends StatefulWidget {
   const ViewLogbook({Key? key}) : super(key: key);
 
+  @override
+  State<ViewLogbook> createState() => _ViewLogbookState();
+}
+
+class _ViewLogbookState extends State<ViewLogbook> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

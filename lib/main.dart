@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       //   colorScheme: defaultColorScheme,
       //   primarySwatch: Colors.blue,
       // ),
-      home: const LoginPage(),
+      home: LoginPage(),
     );
   }
 }

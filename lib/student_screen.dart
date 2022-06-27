@@ -6,7 +6,6 @@ import 'package:utm_its/view_internships.dart';
 import 'package:utm_its/view_jobposts.dart';
 import 'package:utm_its/view_logbook.dart';
 import 'package:utm_its/view_profile.dart';
-import 'package:utm_its/view_supervisor.dart';
 
 class StudentScreen extends StatelessWidget {
   final String username;
@@ -139,32 +138,6 @@ class StudentScreen extends StatelessWidget {
                             fit: BoxFit.contain,
                             child: Text(
                               'Job Posts',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.teal,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        bottom: 10,
-                      ),
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ViewSupervisor()));
-                          },
-                          child: FittedBox(
-                            fit: BoxFit.contain,
-                            child: Text(
-                              'Supervisor',
                               style: TextStyle(fontSize: 20),
                             ),
                           ),
