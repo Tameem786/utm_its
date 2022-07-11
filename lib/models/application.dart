@@ -25,6 +25,8 @@ class Application extends StatefulWidget {
 class _ApplicationState extends State<Application> {
   @override
   Widget build(BuildContext context) {
+    print(widget.applicationID);
+    print(widget.id);
     return Container(
       height: MediaQuery.of(context).size.height * 0.2,
       child: Card(

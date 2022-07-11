@@ -19,7 +19,7 @@ class Students extends StatelessWidget {
             if (snapshot.hasData) {
               final docs = snapshot.data!.docs;
               return ListView.builder(
-                itemCount: 2,
+                itemCount: 1,
                 itemBuilder: (_, i) {
                   final data = docs[i].data();
                   return data['name'] != null

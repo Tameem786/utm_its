@@ -44,6 +44,9 @@ class _ViewProfileState extends State<ViewProfile> {
           print('Upload Complete!'),
         });
     final urlDownload = await snapshot.ref.getDownloadURL();
+    FirebaseFirestore.instance.collection('students').doc(widget.id).update({
+      'cv': pickedFile!.name,
+    });
     setState(() {
       fileUrl = urlDownload;
     });
@@ -68,10 +71,12 @@ class _ViewProfileState extends State<ViewProfile> {
           print('Upload Complete!'),
         });
     final urlDownload = await snapshot.ref.getDownloadURL();
-    setState(() {
-      imageUrl = urlDownload;
+
+    FirebaseFirestore.instance.collection('students').doc(widget.id).update({
+      'img': urlDownload,
     });
-    print('Link: $urlDownload');
+
+    print('Link: $imageUrl');
   }
 
   Future downloadFile() async {
@@ -126,9 +131,9 @@ class _ViewProfileState extends State<ViewProfile> {
                                           0.3,
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
-                                          image: imageUrl != null
+                                          image: (doc as dynamic)['img'] != null
                                               ? NetworkImage(
-                                                  imageUrl.toString())
+                                                  (doc as dynamic)['img'])
                                               : NetworkImage(
                                                   'https://images.clipartlogo.com/files/istock/previews/9730/97305655-avatar-icon-of-girl-in-a-wide-brim-felt-hat.jpg'),
                                           fit: BoxFit.cover,
@@ -208,18 +213,6 @@ class _ViewProfileState extends State<ViewProfile> {
                                     ],
                                   ),
                                 ),
-                                // Container(
-                                //   child: Row(
-                                //     children: [
-                                //       Padding(
-                                //         padding:
-                                //             const EdgeInsets.only(right: 8.0),
-                                //         child: Text('User Level:'),
-                                //       ),
-                                //       Text((doc as dynamic)['userlevel']),
-                                //     ],
-                                //   ),
-                                // ),
                                 Container(
                                   child: Row(
                                     children: [
@@ -272,18 +265,18 @@ class _ViewProfileState extends State<ViewProfile> {
                                   child: Row(
                                     children: [
                                       Text('Student\'s CV:'),
-                                      TextButton(
-                                        onPressed: downloadFile,
-                                        child: Text(
-                                          'Download',
-                                          style: TextStyle(
-                                            color:
-                                                Color.fromARGB(255, 3, 59, 105),
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                      ),
+                                      // TextButton(
+                                      //   onPressed: downloadFile,
+                                      //   child: Text(
+                                      //     'Download',
+                                      //     style: TextStyle(
+                                      //       color:
+                                      //           Color.fromARGB(255, 3, 59, 105),
+                                      //       fontWeight: FontWeight.bold,
+                                      //       fontSize: 18,
+                                      //     ),
+                                      //   ),
+                                      // ),
                                       TextButton(
                                         onPressed: selectFile,
                                         child: Text(
@@ -300,7 +293,7 @@ class _ViewProfileState extends State<ViewProfile> {
                                   ),
                                 ),
                                 pickedFile != null
-                                    ? Text(pickedFile!.name)
+                                    ? Text((doc as dynamic)['cv'])
                                     : Text('No File')
                               ],
                             ),

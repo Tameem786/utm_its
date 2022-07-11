@@ -196,12 +196,6 @@ class _ViewInternshipState extends State<ViewInternship> {
               color: Colors.grey,
             ),
           ),
-          // Container(
-          //     child: Center(
-          //   child: Text(
-          //     jobs.length.toString(),
-          //   ),
-          // )),
           Container(
             child: titles.length == 0
                 ? Center(
@@ -222,10 +216,6 @@ class _ViewInternshipState extends State<ViewInternship> {
                   ),
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.message_outlined),
-        onPressed: () {},
       ),
     );
   }

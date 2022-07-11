@@ -124,6 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                             var doc = await collectionRef
                                 .doc(myControllerPassword.text)
                                 .get();
+                            print(doc.exists);
                             if (doc.exists) {
                               if (doc['email'] == myControllerUsername.text &&
                                   doc['password'] ==
@@ -144,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 );
                               } else {
-                                print(doc.exists);
+                                print(myControllerPassword.text);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   snackbar(
                                     Colors.red,
@@ -153,44 +154,42 @@ class _LoginPageState extends State<LoginPage> {
                                 );
                               }
                             } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                snackbar(
-                                  Colors.red,
-                                  'Login Failed',
-                                ),
-                              );
-                            }
-                          } catch (e) {
-                            throw e;
-                          }
-                        } else {
-                          if (_formKey.currentState!.validate()) {
-                            try {
-                              var collectionRef = FirebaseFirestore.instance
-                                  .collection('students');
+                              try {
+                                var collectionRef = FirebaseFirestore.instance
+                                    .collection('students');
 
-                              var doc = await collectionRef
-                                  .doc(myControllerPassword.text)
-                                  .get();
-                              if (doc.exists) {
-                                if (doc['email'] == myControllerUsername.text &&
-                                    doc['password'] ==
-                                        myControllerPassword.text) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    snackbar(
-                                      Colors.green,
-                                      'Login Successfull',
-                                    ),
-                                  );
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => StudentScreen(
-                                        id: myControllerPassword.text,
-                                        name: doc['name'],
+                                var doc = await collectionRef
+                                    .doc(myControllerPassword.text)
+                                    .get();
+
+                                if (doc.exists) {
+                                  if (doc['email'] ==
+                                          myControllerUsername.text &&
+                                      doc['password'] ==
+                                          myControllerPassword.text) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      snackbar(
+                                        Colors.green,
+                                        'Login Successfull',
                                       ),
-                                    ),
-                                  );
+                                    );
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => StudentScreen(
+                                          id: myControllerPassword.text,
+                                          name: doc['name'],
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      snackbar(
+                                        Colors.red,
+                                        'Login Failed',
+                                      ),
+                                    );
+                                  }
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     snackbar(
@@ -199,17 +198,68 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                   );
                                 }
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  snackbar(
-                                    Colors.red,
-                                    'Login Failed',
-                                  ),
-                                );
+                              } catch (e) {
+                                throw e;
                               }
-                            } catch (e) {
-                              throw e;
+                              // print(myControllerPassword.text);
+                              // ScaffoldMessenger.of(context).showSnackBar(
+                              //   snackbar(
+                              //     Colors.red,
+                              //     'Login Failed',
+                              //   ),
+                              // );
                             }
+                          } catch (e) {
+                            print(e);
+                          }
+                        } else {
+                          if (_formKey.currentState!.validate()) {
+                            // try {
+                            //   var collectionRef = FirebaseFirestore.instance
+                            //       .collection('students');
+
+                            //   var doc = await collectionRef
+                            //       .doc(myControllerPassword.text)
+                            //       .get();
+
+                            //   if (doc.exists) {
+                            //     if (doc['email'] == myControllerUsername.text &&
+                            //         doc['password'] ==
+                            //             myControllerPassword.text) {
+                            //       ScaffoldMessenger.of(context).showSnackBar(
+                            //         snackbar(
+                            //           Colors.green,
+                            //           'Login Successfull',
+                            //         ),
+                            //       );
+                            //       Navigator.push(
+                            //         context,
+                            //         MaterialPageRoute(
+                            //           builder: (context) => StudentScreen(
+                            //             id: myControllerPassword.text,
+                            //             name: doc['name'],
+                            //           ),
+                            //         ),
+                            //       );
+                            //     } else {
+                            //       ScaffoldMessenger.of(context).showSnackBar(
+                            //         snackbar(
+                            //           Colors.red,
+                            //           'Login Failed',
+                            //         ),
+                            //       );
+                            //     }
+                            //   } else {
+                            //     ScaffoldMessenger.of(context).showSnackBar(
+                            //       snackbar(
+                            //         Colors.red,
+                            //         'Login Failed',
+                            //       ),
+                            //     );
+                            //   }
+                            // } catch (e) {
+                            //   throw e;
+                            // }
                           }
                         }
                       }

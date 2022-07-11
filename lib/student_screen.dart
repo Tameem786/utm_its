@@ -149,7 +149,9 @@ class _StudentScreenState extends State<StudentScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => JobPosts()));
+                                    builder: (context) => JobPosts(
+                                          id: widget.id,
+                                        )));
                           },
                           child: FittedBox(
                             fit: BoxFit.contain,

@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:utm_its/guest_page.dart';
 
-enum SingingCharacter { international, local }
+enum SingingCharacter { yes, no }
 
 class PostJobForm extends StatefulWidget {
   const PostJobForm({Key? key}) : super(key: key);
@@ -20,7 +20,7 @@ class _PostJobFormState extends State<PostJobForm> {
   final myControllerDate = TextEditingController();
   final myControllerDay = TextEditingController();
   final myControllerActivity = TextEditingController();
-  SingingCharacter? _character = SingingCharacter.international;
+  SingingCharacter? _character = SingingCharacter.yes;
 
   bool _value = false;
   int val = -1;
@@ -131,13 +131,13 @@ class _PostJobFormState extends State<PostJobForm> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('I want to hire'),
+                          Text('I want to hire International'),
                           Column(
                             children: [
                               ListTile(
-                                title: const Text('International'),
+                                title: const Text('Yes'),
                                 leading: Radio<SingingCharacter>(
-                                  value: SingingCharacter.international,
+                                  value: SingingCharacter.yes,
                                   groupValue: _character,
                                   onChanged: (SingingCharacter? value) {
                                     setState(() {
@@ -147,9 +147,9 @@ class _PostJobFormState extends State<PostJobForm> {
                                 ),
                               ),
                               ListTile(
-                                title: const Text('Local'),
+                                title: const Text('No'),
                                 leading: Radio<SingingCharacter>(
-                                  value: SingingCharacter.local,
+                                  value: SingingCharacter.no,
                                   groupValue: _character,
                                   onChanged: (SingingCharacter? value) {
                                     setState(() {
@@ -223,7 +223,7 @@ class _PostJobFormState extends State<PostJobForm> {
                               'title': myControllerDay.text,
                               'company': myControllerDate.text,
                               'description': myControllerActivity.text,
-                              'hiring': _character.toString(),
+                              'hiring': _character.toString().split('.').last,
                               'approval': false,
                               'id': string,
                             }).whenComplete(() {

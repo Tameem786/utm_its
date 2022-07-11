@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -7,10 +9,12 @@ class Jobs extends StatefulWidget {
     required this.title,
     required this.company,
     required this.desc,
+    required this.id,
   }) : super(key: key);
   final String title;
   final String company;
   final String desc;
+  final String id;
 
   @override
   State<Jobs> createState() => _JobsState();
@@ -18,6 +22,12 @@ class Jobs extends StatefulWidget {
 
 class _JobsState extends State<Jobs> {
   var _notapplied = true;
+  final _chars =
+      'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+
+  String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
+      length, (_) => _chars.codeUnitAt(Random().nextInt(_chars.length))));
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -34,16 +44,21 @@ class _JobsState extends State<Jobs> {
                 ? ElevatedButton(
                     child: Text('Apply'),
                     onPressed: () async {
+                      var string = getRandomString(20);
                       try {
                         await FirebaseFirestore.instance
                             .collection('applications')
+                            .doc(widget.id)
+                            .collection(widget.id)
                             .doc()
                             .set({
                           'name': widget.title,
                           'company': widget.company,
                           'location': widget.desc,
-                          'student': 'Raoa Faria Karim',
-                          'applied': true,
+                          'studentid': widget.id,
+                          'status': 'Applied',
+                          'approval': false,
+                          'applicationid': string,
                         }).whenComplete(() {
                           setState(() {
                             _notapplied = false;
