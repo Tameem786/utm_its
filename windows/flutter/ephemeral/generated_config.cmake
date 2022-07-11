@@ -12,6 +12,7 @@ list(APPEND FLUTTER_TOOL_ENVIRONMENT
   "FLUTTER_TARGET=D:\\FlutterPSM\\utm_its\\lib\\main.dart"
   "DART_DEFINES=RkxVVFRFUl9XRUJfQVVUT19ERVRFQ1Q9dHJ1ZQ=="
   "DART_OBFUSCATION=false"
+  "EXTRA_FRONT_END_OPTIONS=--no-sound-null-safety"
   "TRACK_WIDGET_CREATION=true"
   "TREE_SHAKE_ICONS=false"
   "PACKAGE_CONFIG=D:\\FlutterPSM\\utm_its\\.dart_tool\\package_config.json"

@@ -1,10 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
-import 'models/logbook.dart';
+import 'package:utm_its/models/books.dart';
 
 class ViewLogbook extends StatefulWidget {
-  const ViewLogbook({Key? key}) : super(key: key);
+  const ViewLogbook({
+    Key? key,
+    required this.id,
+  }) : super(key: key);
+  final String id;
 
   @override
   State<ViewLogbook> createState() => _ViewLogbookState();
@@ -27,155 +29,17 @@ class _ViewLogbookState extends State<ViewLogbook> {
                 width: MediaQuery.of(context).size.width,
                 child: Row(
                   children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.1,
-                      child: Card(
-                        color: Colors.teal,
-                        child: Center(
-                            child: TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => LogBook(
-                                          week: 'week1',
-                                        )));
-                          },
-                          child: Text(
-                            'Week 1',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: Colors.black,
-                            ),
-                          ),
-                        )),
-                      ),
+                    Book(
+                      id: widget.id,
+                      name: 'week1',
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.1,
-                      child: Card(
-                        color: Colors.teal,
-                        child: Center(
-                            child: TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => LogBook(
-                                          week: 'week2',
-                                        )));
-                          },
-                          child: Text(
-                            'Week 2',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: Colors.black,
-                            ),
-                          ),
-                        )),
-                      ),
+                    Book(
+                      id: widget.id,
+                      name: 'week2',
                     ),
-                    // Container(
-                    //   width: MediaQuery.of(context).size.width * 0.3,
-                    //   height: MediaQuery.of(context).size.height * 0.1,
-                    //   child: Card(
-                    //     color: Colors.teal,
-                    //     child: Center(
-                    //         child: Text(
-                    //       'Week 2',
-                    //       style: TextStyle(
-                    //           fontWeight: FontWeight.bold, fontSize: 20),
-                    //     )),
-                    //   ),
-                    // ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.1,
-                      child: Card(
-                        color: Colors.teal,
-                        child: Center(
-                            child: TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => LogBook(
-                                          week: 'week3',
-                                        )));
-                          },
-                          child: Text(
-                            'Week 3',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: Colors.black,
-                            ),
-                          ),
-                        )),
-                      ),
-                    ),
-                    // Container(
-                    //   width: MediaQuery.of(context).size.width * 0.3,
-                    //   height: MediaQuery.of(context).size.height * 0.1,
-                    //   child: Card(
-                    //     color: Colors.teal,
-                    //     child: Center(
-                    //         child: Text(
-                    //       'Week 3',
-                    //       style: TextStyle(
-                    //           fontWeight: FontWeight.bold, fontSize: 20),
-                    //     )),
-                    //   ),
-                    // ),
-                  ],
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                child: Row(
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.1,
-                      child: Card(
-                        color: Colors.teal,
-                        child: Center(
-                            child: Text(
-                          'Week 4',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                        )),
-                      ),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.1,
-                      child: Card(
-                        color: Colors.teal,
-                        child: Center(
-                            child: Text(
-                          'Week 5',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                        )),
-                      ),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.1,
-                      child: Card(
-                        color: Colors.teal,
-                        child: Center(
-                            child: Text(
-                          'Week 6',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                        )),
-                      ),
+                    Book(
+                      id: widget.id,
+                      name: 'week3',
                     ),
                   ],
                 ),
@@ -184,44 +48,17 @@ class _ViewLogbookState extends State<ViewLogbook> {
                 width: MediaQuery.of(context).size.width,
                 child: Row(
                   children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.1,
-                      child: Card(
-                        color: Colors.teal,
-                        child: Center(
-                            child: Text(
-                          'Week 7',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                        )),
-                      ),
+                    Book(
+                      id: widget.id,
+                      name: 'week4',
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.1,
-                      child: Card(
-                        color: Colors.teal,
-                        child: Center(
-                            child: Text(
-                          'Week 8',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                        )),
-                      ),
+                    Book(
+                      id: widget.id,
+                      name: 'week5',
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.1,
-                      child: Card(
-                        color: Colors.teal,
-                        child: Center(
-                            child: Text(
-                          'Week 9',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                        )),
-                      ),
+                    Book(
+                      id: widget.id,
+                      name: 'week6',
                     ),
                   ],
                 ),
@@ -230,44 +67,17 @@ class _ViewLogbookState extends State<ViewLogbook> {
                 width: MediaQuery.of(context).size.width,
                 child: Row(
                   children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.1,
-                      child: Card(
-                        color: Colors.teal,
-                        child: Center(
-                            child: Text(
-                          'Week 10',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                        )),
-                      ),
+                    Book(
+                      id: widget.id,
+                      name: 'week7',
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.1,
-                      child: Card(
-                        color: Colors.teal,
-                        child: Center(
-                            child: Text(
-                          'Week 11',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                        )),
-                      ),
+                    Book(
+                      id: widget.id,
+                      name: 'week8',
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.1,
-                      child: Card(
-                        color: Colors.teal,
-                        child: Center(
-                            child: Text(
-                          'Week 12',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                        )),
-                      ),
+                    Book(
+                      id: widget.id,
+                      name: 'week9',
                     ),
                   ],
                 ),
@@ -276,44 +86,17 @@ class _ViewLogbookState extends State<ViewLogbook> {
                 width: MediaQuery.of(context).size.width,
                 child: Row(
                   children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.1,
-                      child: Card(
-                        color: Colors.teal,
-                        child: Center(
-                            child: Text(
-                          'Week 13',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                        )),
-                      ),
+                    Book(
+                      id: widget.id,
+                      name: 'week10',
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.1,
-                      child: Card(
-                        color: Colors.teal,
-                        child: Center(
-                            child: Text(
-                          'Week 14',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                        )),
-                      ),
+                    Book(
+                      id: widget.id,
+                      name: 'week11',
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.1,
-                      child: Card(
-                        color: Colors.teal,
-                        child: Center(
-                            child: Text(
-                          'Week 15',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                        )),
-                      ),
+                    Book(
+                      id: widget.id,
+                      name: 'week12',
                     ),
                   ],
                 ),
@@ -322,44 +105,17 @@ class _ViewLogbookState extends State<ViewLogbook> {
                 width: MediaQuery.of(context).size.width,
                 child: Row(
                   children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.1,
-                      child: Card(
-                        color: Colors.teal,
-                        child: Center(
-                            child: Text(
-                          'Week 16',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                        )),
-                      ),
+                    Book(
+                      id: widget.id,
+                      name: 'week13',
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.1,
-                      child: Card(
-                        color: Colors.teal,
-                        child: Center(
-                            child: Text(
-                          'Week 17',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                        )),
-                      ),
+                    Book(
+                      id: widget.id,
+                      name: 'week14',
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.1,
-                      child: Card(
-                        color: Colors.teal,
-                        child: Center(
-                            child: Text(
-                          'Week 18',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                        )),
-                      ),
+                    Book(
+                      id: widget.id,
+                      name: 'week15',
                     ),
                   ],
                 ),
@@ -368,31 +124,32 @@ class _ViewLogbookState extends State<ViewLogbook> {
                 width: MediaQuery.of(context).size.width,
                 child: Row(
                   children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.1,
-                      child: Card(
-                        color: Colors.teal,
-                        child: Center(
-                            child: Text(
-                          'Week 19',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                        )),
-                      ),
+                    Book(
+                      id: widget.id,
+                      name: 'week16',
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.1,
-                      child: Card(
-                        color: Colors.teal,
-                        child: Center(
-                            child: Text(
-                          'Week 20',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                        )),
-                      ),
+                    Book(
+                      id: widget.id,
+                      name: 'week17',
+                    ),
+                    Book(
+                      id: widget.id,
+                      name: 'week18',
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                child: Row(
+                  children: [
+                    Book(
+                      id: widget.id,
+                      name: 'week19',
+                    ),
+                    Book(
+                      id: widget.id,
+                      name: 'week20',
                     ),
                   ],
                 ),

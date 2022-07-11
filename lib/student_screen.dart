@@ -7,9 +7,20 @@ import 'package:utm_its/view_jobposts.dart';
 import 'package:utm_its/view_logbook.dart';
 import 'package:utm_its/view_profile.dart';
 
-class StudentScreen extends StatelessWidget {
-  final String username;
-  const StudentScreen({Key? key, required this.username}) : super(key: key);
+class StudentScreen extends StatefulWidget {
+  final String id;
+  final String name;
+  const StudentScreen({
+    Key? key,
+    required this.id,
+    required this.name,
+  }) : super(key: key);
+
+  @override
+  State<StudentScreen> createState() => _StudentScreenState();
+}
+
+class _StudentScreenState extends State<StudentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +40,7 @@ class StudentScreen extends StatelessWidget {
                 child: FittedBox(
                   fit: BoxFit.contain,
                   child: Text(
-                    'Hi, $username',
+                    'Hi, ${widget.name}',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -54,7 +65,9 @@ class StudentScreen extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => ViewProfile()));
+                                    builder: (context) => ViewProfile(
+                                          id: widget.id,
+                                        )));
                           },
                           child: FittedBox(
                             fit: BoxFit.contain,
@@ -80,7 +93,9 @@ class StudentScreen extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => ViewInternship()));
+                                    builder: (context) => ViewInternship(
+                                          id: widget.id,
+                                        )));
                           },
                           child: FittedBox(
                             fit: BoxFit.contain,
@@ -106,7 +121,10 @@ class StudentScreen extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => ViewApplication()));
+                                    builder: (context) => ViewApplication(
+                                          isAdmin: false,
+                                          id: widget.id,
+                                        )));
                           },
                           child: FittedBox(
                             fit: BoxFit.contain,
@@ -158,7 +176,9 @@ class StudentScreen extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => ViewLogbook()));
+                                    builder: (context) => ViewLogbook(
+                                          id: widget.id,
+                                        )));
                           },
                           child: FittedBox(
                             fit: BoxFit.contain,
@@ -180,8 +200,8 @@ class StudentScreen extends StatelessWidget {
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width * 0.8,
                         child: ElevatedButton(
-                          onPressed: () async {
-                            await FirebaseAuth.instance.signOut();
+                          onPressed: () {
+                            // await FirebaseAuth.instance.signOut();
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -208,10 +228,6 @@ class StudentScreen extends StatelessWidget {
             ],
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.message_outlined),
-        onPressed: () {},
       ),
     );
   }

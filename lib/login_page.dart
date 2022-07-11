@@ -1,24 +1,15 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_core/firebase_core.dart';
-// import 'dart:html';
-
-// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:utm_its/admin_panel.dart';
 import 'package:utm_its/google_auth.dart';
 import 'package:utm_its/guest_page.dart';
-import 'package:utm_its/register_page.dart';
 import 'package:utm_its/student_screen.dart';
 import 'package:utm_its/view_supervisor.dart';
 
 class LoginPage extends StatefulWidget {
-  // const LoginPage({Key? key, required this.title}) : super(key: key);
   const LoginPage({Key? key}) : super(key: key);
-  // final String title;
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -29,16 +20,18 @@ class _LoginPageState extends State<LoginPage> {
   final myControllerUsername = TextEditingController();
   final myControllerPassword = TextEditingController();
 
-  // var _username = '';
-  // final students = FirebaseFirestore.instance.collection('students');
-
   final _chars =
       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
 
   String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
       length, (_) => _chars.codeUnitAt(Random().nextInt(_chars.length))));
 
-  final _firebaseAuth = FirebaseAuth.instance;
+  SnackBar snackbar(Color color, String text) {
+    return SnackBar(
+      backgroundColor: color,
+      content: Text(text),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,13 +68,14 @@ class _LoginPageState extends State<LoginPage> {
                         if (value == null || value.isEmpty) {
                           return 'Please enter some text';
                         }
+                        if (value.length < 5) {
+                          return 'Username should be more than 5 character';
+                        }
+                        if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
+                          return 'Please provide valid email address';
+                        }
                         return null;
                       },
-                      // onSaved: (value) {
-                      //   setState(() {
-                      //     _username = value.toString();
-                      //   });
-                      // },
                     ),
                     TextFormField(
                       controller: myControllerPassword,
@@ -91,6 +85,9 @@ class _LoginPageState extends State<LoginPage> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter some text';
+                        }
+                        if (value.length < 6) {
+                          return 'Password should be more than 6 characters';
                         }
                         return null;
                       },
@@ -107,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (myControllerUsername.text == 'admin' &&
                           myControllerPassword.text == 'admin') {
                         Navigator.push(
@@ -116,32 +113,63 @@ class _LoginPageState extends State<LoginPage> {
                             builder: (context) => AdminPanel(),
                           ),
                         );
-                      } else if (myControllerUsername.text ==
-                              'jungkook@utm.my' &&
-                          myControllerPassword.text == 'super') {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Supervisor(
-                                    username: myControllerUsername.text)));
-                      }
+                      } else {
+                        if (myControllerUsername.text == 'jungkook@utm.my' &&
+                            myControllerPassword.text == 'super') {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Supervisor(
+                                      username: myControllerUsername.text)));
+                        } else {
+                          if (_formKey.currentState!.validate()) {
+                            try {
+                              var collectionRef = FirebaseFirestore.instance
+                                  .collection('students');
 
-                      // final query = students.where("matric", isEqualTo: '');
-                      // if (_formKey.currentState!.validate()) {
-                      else {
-                        _firebaseAuth
-                            .signInWithEmailAndPassword(
-                                email: myControllerUsername.text,
-                                password: myControllerPassword.text)
-                            .then((value) {
-                          print('Logged in Successfully!');
-                        });
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => StudentScreen(
-                                      username: myControllerUsername.text,
-                                    )));
+                              var doc = await collectionRef
+                                  .doc(myControllerPassword.text)
+                                  .get();
+                              if (doc.exists) {
+                                if (doc['email'] == myControllerUsername.text &&
+                                    doc['password'] ==
+                                        myControllerPassword.text) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    snackbar(
+                                      Colors.green,
+                                      'Login Successfull',
+                                    ),
+                                  );
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => StudentScreen(
+                                        id: myControllerPassword.text,
+                                        name: doc['name'],
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    snackbar(
+                                      Colors.red,
+                                      'Login Failed',
+                                    ),
+                                  );
+                                }
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  snackbar(
+                                    Colors.red,
+                                    'Login Failed',
+                                  ),
+                                );
+                              }
+                            } catch (e) {
+                              throw e;
+                            }
+                          }
+                        }
                       }
                     },
                     child: Text('Login'),
@@ -150,7 +178,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   Text(
-                    'Forgot Password?',
+                    'OR',
                     style: TextStyle(
                       color: Color.fromARGB(255, 156, 17, 7),
                     ),
@@ -171,13 +199,6 @@ class _LoginPageState extends State<LoginPage> {
                             if (data['email'] == user.email.toString()) {
                               print('Email Found!');
                               exist = true;
-                              // Navigator.of(context).pushReplacement(
-                              //   MaterialPageRoute(
-                              //     builder: (context) => GuestPage(
-                              //       user: user,
-                              //     ),
-                              //   ),
-                              // );
                             }
                           }
                         });
@@ -191,8 +212,6 @@ class _LoginPageState extends State<LoginPage> {
                           );
                         } else {
                           var string = getRandomString(20);
-
-                          // print('Email: ' + email.toString());
                           FirebaseFirestore.instance
                               .collection('recruiters')
                               .doc(string)
@@ -211,10 +230,6 @@ class _LoginPageState extends State<LoginPage> {
                           );
                         }
                       }
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => const RegisterPage()));
                     },
                     child: Text('Signin as a Guest Using Google'),
                     style: ElevatedButton.styleFrom(

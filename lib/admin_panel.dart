@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:utm_its/admin_job.dart';
 import 'package:utm_its/admin_recruiter.dart';
+import 'package:utm_its/view_application.dart';
 
 import 'main.dart';
 
@@ -84,6 +85,35 @@ class AdminPanel extends StatelessWidget {
                             fit: BoxFit.contain,
                             child: Text(
                               'View Recruiter List',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.teal,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        bottom: 10,
+                      ),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ViewApplication(
+                                          isAdmin: true,
+                                          id: '',
+                                        )));
+                          },
+                          child: FittedBox(
+                            fit: BoxFit.contain,
+                            child: Text(
+                              'View Application List',
                               style: TextStyle(fontSize: 20),
                             ),
                           ),

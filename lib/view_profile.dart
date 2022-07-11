@@ -1,20 +1,24 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
-// import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ViewProfile extends StatefulWidget {
-  const ViewProfile({Key? key}) : super(key: key);
+  const ViewProfile({
+    Key? key,
+    required this.id,
+  }) : super(key: key);
+  final String id;
 
   @override
   State<ViewProfile> createState() => _ViewProfileState();
 }
 
 class _ViewProfileState extends State<ViewProfile> {
+  String? fileUrl;
   PlatformFile? pickedFile;
   UploadTask? uploadTask;
   PlatformFile? pickedImage;
@@ -40,6 +44,9 @@ class _ViewProfileState extends State<ViewProfile> {
           print('Upload Complete!'),
         });
     final urlDownload = await snapshot.ref.getDownloadURL();
+    setState(() {
+      fileUrl = urlDownload;
+    });
     print('Link: $urlDownload');
   }
 
@@ -68,11 +75,18 @@ class _ViewProfileState extends State<ViewProfile> {
   }
 
   Future downloadFile() async {
-    final dir = await getTemporaryDirectory();
-    final file = File('${dir.path}/raoa}');
-    await Dio()
-        .download(imageUrl.toString(), file)
-        .whenComplete(() => print('Download Complete!'));
+    // First you get the documents folder location on the device...
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    // Here you'll specify the file it should be saved as
+    // File downloadToFile = File('${appDocDir.path}/downloaded-pdf.pdf');
+    final taskId = await FlutterDownloader.enqueue(
+      url: fileUrl!,
+      savedDir: appDocDir.path,
+      showNotification:
+          true, // show download progress in status bar (for Android)
+      openFileFromNotification:
+          true, // click on notification to open downloaded file (for Android)
+    );
   }
 
   @override
@@ -85,7 +99,7 @@ class _ViewProfileState extends State<ViewProfile> {
       body: StreamBuilder<Object>(
           stream: FirebaseFirestore.instance
               .collection('students')
-              .doc('yHJ0Uz751wlJeRna2S0e')
+              .doc(widget.id)
               .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -194,18 +208,18 @@ class _ViewProfileState extends State<ViewProfile> {
                                     ],
                                   ),
                                 ),
-                                Container(
-                                  child: Row(
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 8.0),
-                                        child: Text('User Level:'),
-                                      ),
-                                      Text((doc as dynamic)['userlevel']),
-                                    ],
-                                  ),
-                                ),
+                                // Container(
+                                //   child: Row(
+                                //     children: [
+                                //       Padding(
+                                //         padding:
+                                //             const EdgeInsets.only(right: 8.0),
+                                //         child: Text('User Level:'),
+                                //       ),
+                                //       Text((doc as dynamic)['userlevel']),
+                                //     ],
+                                //   ),
+                                // ),
                                 Container(
                                   child: Row(
                                     children: [
@@ -258,38 +272,36 @@ class _ViewProfileState extends State<ViewProfile> {
                                   child: Row(
                                     children: [
                                       Text('Student\'s CV:'),
-                                      // TextButton(
-                                      //   onPressed: downloadFile,
-                                      //   child: Text(
-                                      //     'Download',
-                                      //     style: TextStyle(
-                                      //       color:
-                                      //           Color.fromARGB(255, 3, 59, 105),
-                                      //       fontWeight: FontWeight.bold,
-                                      //       fontSize: 18,
-                                      //     ),
-                                      //   ),
-                                      // ),
-                                      pickedFile != null
-                                          ? Text('CV has been uploaded.')
-                                          : TextButton(
-                                              onPressed: selectFile,
-                                              child: Text(
-                                                'Upload',
-                                                style: TextStyle(
-                                                  color: Color.fromARGB(
-                                                      255, 190, 17, 17),
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 18,
-                                                ),
-                                              ),
-                                            ),
+                                      TextButton(
+                                        onPressed: downloadFile,
+                                        child: Text(
+                                          'Download',
+                                          style: TextStyle(
+                                            color:
+                                                Color.fromARGB(255, 3, 59, 105),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                      ),
+                                      TextButton(
+                                        onPressed: selectFile,
+                                        child: Text(
+                                          'Upload',
+                                          style: TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 190, 17, 17),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
-                                // pickedFile != null
-                                //     ? Text('CV has been uploaded.')
-                                //     : Text('No File Selected'),
+                                pickedFile != null
+                                    ? Text(pickedFile!.name)
+                                    : Text('No File')
                               ],
                             ),
                           ),

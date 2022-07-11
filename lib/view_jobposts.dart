@@ -29,10 +29,10 @@ class JobPosts extends StatelessWidget {
                           desc: data['description'],
                         )
                       : Container(
-                          // child: Center(
-                          //   child: Text('Currenly No Jobs have been posted'),
-                          // ),
-                          );
+                          child: Center(
+                            child: Text('Currenly No Jobs have been posted'),
+                          ),
+                        );
                 },
               );
             }

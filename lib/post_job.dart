@@ -18,6 +18,9 @@ class _PostJobFormState extends State<PostJobForm> {
   final myControllerDate = TextEditingController();
   final myControllerDay = TextEditingController();
   final myControllerActivity = TextEditingController();
+
+  bool _value = false;
+  int val = -1;
   // User user = FirebaseAuth.instance.currentUser!;
 
   final _chars =
@@ -95,6 +98,41 @@ class _PostJobFormState extends State<PostJobForm> {
                         contentPadding: EdgeInsets.all(16),
                         fillColor: Colors.white,
                       ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height * 0.05,
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    child: Column(
+                      children: [
+                        Text('I want to hire'),
+                        Row(
+                          children: [
+                            Radio(
+                                value: "radio value",
+                                groupValue: "group value",
+                                onChanged: (value) {
+                                  print(value); //selected value
+                                }),
+                            Text('International'),
+                            Radio(
+                                value: "radio value",
+                                groupValue: "group value",
+                                onChanged: (value) {
+                                  print(value); //selected value
+                                }),
+                            Text('Local'),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ],

@@ -74,6 +74,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "email_validator",
+      "rootUri": "file:///D:/Downloaded%20Softwares/flutter_windows_2.10.4-stable/flutter/.pub-cache/hosted/pub.dartlang.org/email_validator-1.0.6",
+      "packageUri": "lib/",
+      "languageVersion": "1.24"
+    },
+    {
       "name": "fake_async",
       "rootUri": "file:///D:/Downloaded%20Softwares/flutter_windows_2.10.4-stable/flutter/.pub-cache/hosted/pub.dartlang.org/fake_async-1.2.0",
       "packageUri": "lib/",
@@ -154,6 +160,12 @@
     {
       "name": "flutter",
       "rootUri": "file:///D:/Downloaded%20Softwares/flutter_windows_2.10.4-stable/flutter/packages/flutter",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter_downloader",
+      "rootUri": "file:///D:/Downloaded%20Softwares/flutter_windows_2.10.4-stable/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_downloader-1.7.4",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -416,7 +428,7 @@
       "languageVersion": "2.16"
     }
   ],
-  "generated": "2022-06-23T13:25:53.151089Z",
+  "generated": "2022-07-09T04:31:59.261822Z",
   "generator": "pub",
   "generatorVersion": "2.16.2"
 }

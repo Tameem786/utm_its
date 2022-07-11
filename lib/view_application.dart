@@ -1,24 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:utm_its/models/application.dart';
 
 class ViewApplication extends StatefulWidget {
-  const ViewApplication({Key? key}) : super(key: key);
+  const ViewApplication({
+    Key? key,
+    required this.isAdmin,
+    required this.id,
+  }) : super(key: key);
+  final bool isAdmin;
+  final String id;
 
   @override
   State<ViewApplication> createState() => _ViewApplicationState();
 }
 
 class _ViewApplicationState extends State<ViewApplication> {
-  // void _getData() async {
-  //   var collection = FirebaseFirestore.instance.collection('applications');
-  //   var querySnapshot = await collection.get();
-  //   for (var queryDocumentSnapshot in querySnapshot.docs) {
-  //     Map<String, dynamic> data = queryDocumentSnapshot.data();
-  //     var name = data['name'];
-  //     var phone = data['phone'];
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,8 +25,11 @@ class _ViewApplicationState extends State<ViewApplication> {
       ),
       body: Container(
         child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-          stream:
-              FirebaseFirestore.instance.collection('applications').snapshots(),
+          stream: FirebaseFirestore.instance
+              .collection('applications')
+              .doc(widget.id)
+              .collection(widget.id)
+              .snapshots(),
           builder: (_, snapshot) {
             if (snapshot.hasError) return Text('Error = ${snapshot.error}');
 
@@ -39,20 +39,15 @@ class _ViewApplicationState extends State<ViewApplication> {
                 itemCount: docs.length,
                 itemBuilder: (_, i) {
                   final data = docs[i].data();
+                  print(data['id']);
                   return data['company'] != null
-                      ? Container(
-                          height: MediaQuery.of(context).size.height * 0.15,
-                          child: Card(
-                            child: Column(
-                              children: [
-                                ListTile(
-                                  title: Text(data['company'].toString()),
-                                  subtitle: Text(data['location'].toString()),
-                                ),
-                                Text('Status: Pending'),
-                              ],
-                            ),
-                          ),
+                      ? Application(
+                          company: data['company'],
+                          location: data['location'],
+                          status: data['status'],
+                          isAdmin: widget.isAdmin,
+                          applicationID: data['id'],
+                          id: widget.id,
                         )
                       : Container();
                 },

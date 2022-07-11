@@ -3,8 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:utm_its/view_logbook.dart';
 
 class LogBook extends StatefulWidget {
-  const LogBook({Key? key, required this.week}) : super(key: key);
+  const LogBook({
+    Key? key,
+    required this.week,
+    required this.id,
+  }) : super(key: key);
   final String week;
+  final String id;
   @override
   State<LogBook> createState() => _LogBookState();
 }
@@ -146,7 +151,7 @@ class _LogBookState extends State<LogBook> {
                       try {
                         await FirebaseFirestore.instance
                             .collection('logbooks')
-                            .doc('yHJ0Uz751wlJeRna2S0e')
+                            .doc(widget.id)
                             .collection(widget.week)
                             .doc()
                             .set({
@@ -154,11 +159,14 @@ class _LogBookState extends State<LogBook> {
                           'date': myControllerDate.text,
                           'activity': myControllerActivity.text,
                           'status': true,
+                          'id': widget.id,
                         }).whenComplete(
                           () => Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ViewLogbook())),
+                                  builder: (context) => ViewLogbook(
+                                        id: widget.id,
+                                      ))),
                         );
                       } catch (err) {
                         print(err);

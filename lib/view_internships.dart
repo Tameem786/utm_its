@@ -8,7 +8,11 @@ import 'package:html/parser.dart' as parser;
 import 'package:utm_its/models/internships.dart';
 
 class ViewInternship extends StatefulWidget {
-  const ViewInternship({Key? key}) : super(key: key);
+  const ViewInternship({
+    Key? key,
+    required this.id,
+  }) : super(key: key);
+  final String id;
 
   @override
   State<ViewInternship> createState() => _ViewInternshipState();
@@ -52,17 +56,6 @@ class _ViewInternshipState extends State<ViewInternship> {
         document.getElementsByClassName('base-search-card__subtitle');
     final elements2 =
         document.getElementsByClassName('job-search-card__location');
-    // final elements3 =
-    //     document.getElementsByClassName('job-search-card__workplace-type');
-
-    // FirebaseFirestore.instance
-    //     .collection('applications')
-    //     .get()
-    //     .then((QuerySnapshot querySnapshot) {
-    //   querySnapshot.docs.forEach((doc) {
-    //     applications.add((doc.data() as dynamic)['company'].toString());
-    //   });
-    // });
 
     setState(() {
       titles = elements.map((element) => element.text.trim()).toList();
@@ -222,6 +215,7 @@ class _ViewInternshipState extends State<ViewInternship> {
                           title: titles[index],
                           company: companies[index],
                           location: locations[index],
+                          id: widget.id,
                         );
                       },
                     ),

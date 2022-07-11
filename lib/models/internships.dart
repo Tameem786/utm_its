@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -7,10 +9,12 @@ class InternshipCard extends StatefulWidget {
     required this.title,
     required this.company,
     required this.location,
+    required this.id,
   }) : super(key: key);
   final String title;
   final String company;
   final String location;
+  final String id;
 
   @override
   State<InternshipCard> createState() => _InternshipCardState();
@@ -18,10 +22,17 @@ class InternshipCard extends StatefulWidget {
 
 class _InternshipCardState extends State<InternshipCard> {
   var _notApplied = true;
+  final _chars =
+      'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+
+  String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
+      length, (_) => _chars.codeUnitAt(Random().nextInt(_chars.length))));
 
   void _hasData(String data) async {
     FirebaseFirestore.instance
         .collection("applications")
+        .doc(widget.id)
+        .collection(widget.id)
         .get()
         .then((querySnapshot) => {
               querySnapshot.docs.forEach((doc) {
@@ -62,20 +73,25 @@ class _InternshipCardState extends State<InternshipCard> {
                     child: ElevatedButton(
                       child: Text('Apply'),
                       onPressed: () async {
+                        var string = getRandomString(20);
                         try {
                           await FirebaseFirestore.instance
                               .collection('applications')
-                              .doc()
+                              .doc(widget.id)
+                              .collection(widget.id)
+                              .doc(string)
                               .set({
                             'name': widget.title,
                             'company': widget.company,
                             'location': widget.location,
-                            'student': 'Raoa Faria Karim',
+                            'applicationid': string,
+                            'studentid': widget.id,
+                            'status': 'Applied',
                           }).whenComplete(() {});
                         } catch (err) {
                           print(err);
                         } finally {
-                          print('Logbook Submitted');
+                          print('Job Submitted');
                         }
                       },
                     ),

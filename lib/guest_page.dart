@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:utm_its/post_job.dart';
-
 import 'main.dart';
 
 class GuestPage extends StatefulWidget {
@@ -42,7 +41,7 @@ class _GuestPageState extends State<GuestPage> {
                 child: FittedBox(
                   fit: BoxFit.contain,
                   child: Text(
-                    'Hi, ' + _user.displayName.toString(),
+                    'Hi, ' + 'Raoa Faria Karim',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
