@@ -30,47 +30,14 @@ class AdminJob extends StatelessWidget {
                           jobID: data['id'],
                           approval: data['approval'],
                         )
-                      // ? Container(
-                      //     height: MediaQuery.of(context).size.height * 0.15,
-                      //     child: Card(
-                      //       child: Column(
-                      //         children: [
-                      //           ListTile(
-                      //             title: Text(data['title'].toString()),
-                      //             subtitle: Column(
-                      //               crossAxisAlignment:
-                      //                   CrossAxisAlignment.start,
-                      //               children: [
-                      //                 Text(data['company'].toString()),
-                      //                 Text(data['description']),
-                      //               ],
-                      //             ),
-                      //           ),
-                      //           ElevatedButton(
-                      //             onPressed: () async {
-                      //               await FirebaseFirestore.instance
-                      //                   .collection('jobposts')
-                      //                   .doc(data['id'])
-                      //                   .update({
-                      //                 'approval': true,
-                      //               });
-                      //             },
-                      //             child: Text('Approve'),
-                      //           ),
-                      //         ],
-                      //       ),
-                      //     ),
-                      //   )
-                      : Container(
-                          // child: Center(
-                          //   child: Text('Currenly No Jobs have been posted'),
-                          // ),
-                          );
+                      : Container();
                 },
               );
             }
 
-            return Center(child: CircularProgressIndicator());
+            return Center(
+              child: Text('No Data'),
+            );
           },
         ),
       ),

@@ -1,15 +1,24 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:utm_its/view_student.dart';
 
 import 'main.dart';
 
-class Supervisor extends StatelessWidget {
+class Supervisor extends StatefulWidget {
   const Supervisor({
     Key? key,
     required this.username,
+    required this.id,
   }) : super(key: key);
   final String username;
+  final String id;
 
+  @override
+  State<Supervisor> createState() => _SupervisorState();
+}
+
+class _SupervisorState extends State<Supervisor> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +39,7 @@ class Supervisor extends StatelessWidget {
                 child: FittedBox(
                   fit: BoxFit.contain,
                   child: Text(
-                    'Hi, $username',
+                    'Hi, ${widget.username}',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,

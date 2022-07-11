@@ -41,7 +41,7 @@ class _GuestPageState extends State<GuestPage> {
                 child: FittedBox(
                   fit: BoxFit.contain,
                   child: Text(
-                    'Hi, ' + 'Raoa Faria Karim',
+                    'Hi, ' + _user.displayName.toString(),
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,

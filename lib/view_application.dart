@@ -25,11 +25,17 @@ class _ViewApplicationState extends State<ViewApplication> {
       ),
       body: Container(
         child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-          stream: FirebaseFirestore.instance
-              .collection('applications')
-              .doc(widget.id)
-              .collection(widget.id)
-              .snapshots(),
+          stream: widget.isAdmin
+              ? FirebaseFirestore.instance
+                  .collection('applications')
+                  .doc(widget.id)
+                  .collection(widget.id)
+                  .snapshots()
+              : FirebaseFirestore.instance
+                  .collection('applications')
+                  .doc(widget.id)
+                  .collection(widget.id)
+                  .snapshots(),
           builder: (_, snapshot) {
             if (snapshot.hasError) return Text('Error = ${snapshot.error}');
 
@@ -39,7 +45,6 @@ class _ViewApplicationState extends State<ViewApplication> {
                 itemCount: docs.length,
                 itemBuilder: (_, i) {
                   final data = docs[i].data();
-                  print(data['id']);
                   return data['company'] != null
                       ? Application(
                           company: data['company'],

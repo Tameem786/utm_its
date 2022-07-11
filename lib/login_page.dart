@@ -19,6 +19,7 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final myControllerUsername = TextEditingController();
   final myControllerPassword = TextEditingController();
+  bool _exist = false;
 
   final _chars =
       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
@@ -114,13 +115,52 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         );
                       } else {
-                        if (myControllerUsername.text == 'jungkook@utm.my' &&
-                            myControllerPassword.text == 'super') {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Supervisor(
-                                      username: myControllerUsername.text)));
+                        if (_formKey.currentState!.validate()) {
+                          try {
+                            var collectionRef = FirebaseFirestore.instance
+                                .collection('supervisors');
+
+                            var doc = await collectionRef
+                                .doc(myControllerPassword.text)
+                                .get();
+                            if (doc.exists) {
+                              if (doc['email'] == myControllerUsername.text &&
+                                  doc['password'] ==
+                                      myControllerPassword.text) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  snackbar(
+                                    Colors.green,
+                                    'Login Successfull',
+                                  ),
+                                );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Supervisor(
+                                      username: myControllerUsername.text,
+                                      id: myControllerPassword.text,
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  snackbar(
+                                    Colors.red,
+                                    'Login Failed',
+                                  ),
+                                );
+                              }
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                snackbar(
+                                  Colors.red,
+                                  'Login Failed',
+                                ),
+                              );
+                            }
+                          } catch (e) {
+                            throw e;
+                          }
                         } else {
                           if (_formKey.currentState!.validate()) {
                             try {
@@ -189,20 +229,21 @@ class _LoginPageState extends State<LoginPage> {
                           context: context);
 
                       if (user != null) {
-                        bool exist = false;
-                        FirebaseFirestore.instance
+                        await FirebaseFirestore.instance
                             .collection('recruiters')
                             .get()
                             .then((value) {
                           for (var doc in value.docs) {
                             Map<String, dynamic> data = doc.data();
                             if (data['email'] == user.email.toString()) {
-                              print('Email Found!');
-                              exist = true;
+                              setState(() {
+                                _exist = true;
+                              });
+                              break;
                             }
                           }
                         });
-                        if (exist) {
+                        if (_exist) {
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
                               builder: (context) => GuestPage(
@@ -212,6 +253,7 @@ class _LoginPageState extends State<LoginPage> {
                           );
                         } else {
                           var string = getRandomString(20);
+
                           FirebaseFirestore.instance
                               .collection('recruiters')
                               .doc(string)

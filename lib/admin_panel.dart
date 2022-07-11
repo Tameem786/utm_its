@@ -107,7 +107,7 @@ class AdminPanel extends StatelessWidget {
                                 MaterialPageRoute(
                                     builder: (context) => ViewApplication(
                                           isAdmin: true,
-                                          id: '',
+                                          id: '201808M10221',
                                         )));
                           },
                           child: FittedBox(

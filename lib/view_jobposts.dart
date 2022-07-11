@@ -28,11 +28,7 @@ class JobPosts extends StatelessWidget {
                           company: data['company'],
                           desc: data['description'],
                         )
-                      : Container(
-                          child: Center(
-                            child: Text('Currenly No Jobs have been posted'),
-                          ),
-                        );
+                      : Container();
                 },
               );
             }

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
 class StudentLog extends StatefulWidget {
-  const StudentLog({Key? key}) : super(key: key);
+  const StudentLog({
+    Key? key,
+    required this.id,
+  }) : super(key: key);
+  final String id;
 
   @override
   State<StudentLog> createState() => _StudentLogState();

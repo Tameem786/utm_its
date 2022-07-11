@@ -43,8 +43,14 @@ class _StudentState extends State<Student> {
                 ElevatedButton(
                   child: Text('View Logbook'),
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => StudentLog()));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => StudentLog(
+                          id: widget.id,
+                        ),
+                      ),
+                    );
                   },
                 ),
                 ElevatedButton(

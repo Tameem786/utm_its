@@ -9,7 +9,7 @@ class Students extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 99, 174, 234),
-      appBar: AppBar(title: Text('Job Posts')),
+      appBar: AppBar(title: Text('Student Lists')),
       body: Container(
         child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
           stream: FirebaseFirestore.instance.collection('students').snapshots(),
@@ -19,7 +19,7 @@ class Students extends StatelessWidget {
             if (snapshot.hasData) {
               final docs = snapshot.data!.docs;
               return ListView.builder(
-                itemCount: docs.length,
+                itemCount: 2,
                 itemBuilder: (_, i) {
                   final data = docs[i].data();
                   return data['name'] != null
