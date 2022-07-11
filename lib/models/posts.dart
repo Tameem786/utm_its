@@ -24,7 +24,7 @@ class _JobPostState extends State<JobPost> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.15,
+      height: MediaQuery.of(context).size.height * 0.2,
       child: Card(
         child: Column(
           children: [

@@ -80,6 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     TextFormField(
                       controller: myControllerPassword,
+                      obscureText: true,
                       decoration: InputDecoration(
                         hintText: 'Password',
                       ),
@@ -143,6 +144,7 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 );
                               } else {
+                                print(doc.exists);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   snackbar(
                                     Colors.red,
